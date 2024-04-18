@@ -9,4 +9,8 @@ import scrapy
 class NewsparserItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    header = scrapy.Field()
+    source = scrapy.Field()
+    url = scrapy.Field()
+
     pass

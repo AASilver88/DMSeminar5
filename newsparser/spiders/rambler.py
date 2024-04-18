@@ -1,6 +1,6 @@
 import scrapy
 from scrapy.http import HtmlResponse
-from news.items import NewsItem
+from ..items import NewsparserItem
 from scrapy.loader import ItemLoader
 
 class RamblerSpider(scrapy.Spider):
@@ -23,11 +23,10 @@ class RamblerSpider(scrapy.Spider):
 
 
     def news_parse(self, response):
-        header = response.xpath("//h1[@class='hdr__inner']/text()").get()
-        print(header)
-        source = response.xpath("//span[@class='link__text']/text()").get()
-        print(source)
-        datetime = response.xpath("//span[contains(@class, 'js-ago')]/@datetime").get()
-        print(datetime)
-        url = response.url
-        yield NewsItem(header=header, source=source, datetime=datetime, url=url)
+        item = NewsparserItem()
+        item['header'] = response.xpath("//h1/text()").get()
+
+        item['source'] = response.xpath("//div[@data-news_media-desktop='content_block']//div//p//text()").get()
+
+        item['url'] = response.url
+        yield item
